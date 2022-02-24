@@ -1,7 +1,7 @@
 websms
 ==============
 
-Python library that allows to send messages using WebSMS platform. 
+Python library that allows to send messages using websms platform. 
 
 Based on [sms_plusserver](https://github.com/W-Z-FinTech-GmbH/sms_plusserver) package.
 
@@ -18,7 +18,7 @@ Usage
 -----
 
 In order to use this library users need to have an account on
-WebSMS platform (https://websms.com/).
+websms platform (https://websms.com/).
 
 #### Quick start
 
@@ -47,7 +47,7 @@ will be used by other functions / classes of the module by default.
 from websms import configure
 
 configure(
-    # Your WebSMS credentials (required):
+    # Your websms credentials (required):
     username='user',
     password='pass',
     # Optional parameters:
@@ -89,7 +89,7 @@ send_sms(
 )
 ```
 
-All API calls are made using HTTP requests to WebSMS web API. User can
+All API calls are made using HTTP requests to websms web API. User can
 specify network timeout for each request:
 ```python
 send_sms(
@@ -156,7 +156,7 @@ as `service` parameter:
 
 #### SMS Response objects
 
-All technical parameters returned by WebSMS API calls, can be inspected
+All technical parameters returned by websms API calls, can be inspected
 by using `post_response` and `state_response` attributes of `SMS` objects.
 
 #### Exceptions

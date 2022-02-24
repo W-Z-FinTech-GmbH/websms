@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-
-import os
+from pathlib import Path
 
 from setuptools import setup
 
-with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme_file:
-    long_description = readme_file.read()
+this_directory = Path(__file__).parent
+long_description = (this_directory / 'README.md').read_text()
 
 
 setup(
     name='websms',
     version='1.0.0',
     description=(
-        'Python library that allows to send messages using WebSMS platform.'
+        'Python library that allows to send messages using websms platform.'
     ),
     long_description=long_description,
     long_description_content_type='text/markdown',

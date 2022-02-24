@@ -8,7 +8,7 @@ logger = logging.getLogger('websms')
 
 
 class SMSServiceError(Exception):
-    """Base exception class"""
+    """Base exception class."""
 
     def __init__(
         self,
@@ -29,30 +29,31 @@ class SMSServiceError(Exception):
 
 
 class ConfigurationError(SMSServiceError):
-    """Service is improperly configured"""
+    """Service is improperly configured."""
 
 
 class CommunicationError(SMSServiceError):
-    """Unable to communicate to API"""
+    """Unable to communicate to API."""
 
 
 class RequestError(SMSServiceError):
-    """API responded with an error"""
+    """API responded with an error."""
 
 
 class SMSSendResponse(object):
-    """Wrapper over SMSService response data, providing dict-like access"""
+    """Wrapper over SMSService response data, providing dict-like access."""
 
-    def __init__(self, response_text: str):
+    def __init__(self, response_text: str) -> None:
         self._data = json.loads(response_text)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<{self.__class__.__name__} [{self.status_code or ""}]>'
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> Union[str, int]:
         return self._data[item]
 
-    def get(self, key, default=None):
+    def get(self, key, default=None) -> Optional[Union[str, int]]:
+        """Retrieve a value of a given key from a parsed JSON data."""
         try:
             value = self[key]
         except KeyError:
@@ -81,13 +82,13 @@ class SMSSendResponse(object):
 
 
 class SMSService(object):
-    """Main object - provider's API client"""
+    """Main object - provider's API client."""
 
-    SMS_POST_URL = 'https://api.websms.com/rest/smsmessaging/text'
+    SMS_API_URL = 'https://api.websms.com/rest/smsmessaging/text'
 
     def __init__(
         self,
-        post_url: Optional[str] = None,
+        api_url: Optional[str] = None,
         username: Optional[str] = None,
         password: Optional[str] = None,
         sender_address: Optional[str] = None,
@@ -95,11 +96,11 @@ class SMSService(object):
         max_sms_per_message: Optional[int] = None,
         timeout: Optional[float] = None,
     ):
-        """Initializes SMSService object
+        """Initializes SMSService object.
 
-        :param post_url: SMS sending webservice URL
-        :param username: username for access to WebSMS platform - REQUIRED
-        :param password: password for access to WebSMS platform - REQUIRED
+        :param api_url: SMS sending webservice URL
+        :param username: username for access to websms platform - REQUIRED
+        :param password: password for access to websms platform - REQUIRED
         :param sender_address: address of the sender from which the message
             is sent (optional)
         :param sender_address_type: SMS sender format, possible options:
@@ -109,7 +110,7 @@ class SMSService(object):
             (optional, implicit default - 1)
         :param timeout: network timeout in seconds (optional)
         """
-        self.post_url = post_url or self.SMS_POST_URL
+        self.api_url = api_url or self.SMS_API_URL
         self.username = username
         self.password = password
         self.sender_address = sender_address
@@ -124,9 +125,9 @@ class SMSService(object):
         """Allows change SMSService parameters set in constructor.
 
         Available options:
-        `post_url`: SMS sending webservice URL
-        `username`: username for access to WebSMS platform - REQUIRED
-        `password`: password for access to WebSMS platform - REQUIRED
+        `api_url`: SMS sending webservice URL
+        `username`: username for access to websms platform - REQUIRED
+        `password`: password for access to websms platform - REQUIRED
         `sender_address`: SMS sender address or name (optional)
         `sender_address_type`: SMS sender format, possible options:
             national, international, alphanumeric, shortcode  (optional)
@@ -145,7 +146,7 @@ class SMSService(object):
         timeout: Optional[float] = None,
         fail_silently: bool = False,
     ) -> Optional[str]:
-        """Sends SMS via WebSMS platform by calling `post_sms`.
+        """Sends SMS via websms platform by calling `post_sms`.
         Populates `SMS.post_response` attribute.
 
         :param sms: an SMS instance
@@ -191,7 +192,7 @@ class SMSService(object):
         timeout: Optional[float] = None,
         fail_silently: bool = False,
     ) -> Optional[SMSSendResponse]:
-        """Sends SMS via WebSMS platform.
+        """Sends SMS via websms platform.
 
         :param recipients_address_list: list of recipient's phone numbers
         :param message_content: message to be sent
@@ -240,7 +241,7 @@ class SMSService(object):
             timeout = self.timeout
 
         return self._request(
-            url=self.post_url,
+            url=self.api_url,
             data=data,
             auth=auth,
             timeout=timeout,
@@ -257,8 +258,8 @@ class SMSService(object):
         resource_name: str,
         fail_silently: bool,
     ) -> Optional[SMSSendResponse]:
-        """Sends a request to Service API, construct SMSSendResponse object from
-        response.
+        """Send a request to Service API, construct SMSSendResponse object from
+        the response.
 
         :param url: destination's URL address
         :param data: POST data
@@ -311,7 +312,7 @@ default_service = SMSService()
 
 
 class SMS(object):
-    """Single message wrapper"""
+    """Single message wrapper."""
 
     def __init__(
         self,
@@ -322,7 +323,7 @@ class SMS(object):
         test: bool = False,
         max_sms_per_message: Optional[int] = None,
     ):
-        """Initializes SMS object - a single message
+        """Initializes SMS object - a single message.
 
         :param recipients_address_list: list of recipient's phone numbers
         :param message_content: message to be sent
@@ -354,7 +355,7 @@ class SMS(object):
         fail_silently: bool = False,
         service: Optional[SMSService] = None,
     ) -> Optional[str]:
-        """Sends this SMS.
+        """Send this SMS.
 
         :param timeout: network timeout in seconds
         :param fail_silently: do not raise exceptions
@@ -372,7 +373,7 @@ class SMS(object):
 
     @property
     def transfer_id(self) -> Optional[str]:
-        """SMS unique transfer ID"""
+        """SMS unique transfer ID."""
         return self.post_response.transfer_id if self.post_response else None
 
 
@@ -426,12 +427,12 @@ def send_sms(
 
 
 def configure(**kwargs):
-    """Configures default SMSService instance.
+    """Configure default SMSService instance.
 
     Available options:
-    `post_url`: SMS sending webservice URL
-    `username`: username for access to WebSMS platform - REQUIRED
-    `password`: password for access to WebSMS platform - REQUIRED
+    `api_url`: SMS sending webservice URL
+    `username`: username for access to websms platform - REQUIRED
+    `password`: password for access to websms platform - REQUIRED
     `sender_address`: SMS sender address or name (optional)
     `sender_address_type`: SMS sender format, possible options:
             national, international, alphanumeric, shortcode  (optional)

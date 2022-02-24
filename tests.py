@@ -122,7 +122,7 @@ class SMSServiceTestCase(unittest.TestCase):
     def test_default_service_attributes(self):
         """Test class default attributes."""
         self.assertEqual(
-            websms.default_service.post_url, websms.SMSService.SMS_POST_URL,
+            websms.default_service.api_url, websms.SMSService.SMS_API_URL
         )
         self.assertIsNone(websms.default_service.username)
         self.assertIsNone(websms.default_service.password)
@@ -135,7 +135,7 @@ class SMSServiceTestCase(unittest.TestCase):
         """Test class default attributes initialization."""
         service = websms.SMSService()
 
-        self.assertEqual(service.post_url, websms.default_service.post_url)
+        self.assertEqual(service.api_url, websms.default_service.api_url)
         self.assertEqual(service.username, websms.default_service.username)
         self.assertEqual(service.password, websms.default_service.password)
         self.assertEqual(
@@ -153,7 +153,7 @@ class SMSServiceTestCase(unittest.TestCase):
 
     def test_init_custom_attributes(self):
         """Test class custom attributes initialization."""
-        custom_post_url = 'http://localhost:8000/post.php'
+        custom_api_url = 'http://localhost:8000/post.php'
         custom_username = 'johndoe'
         custom_password = 'admin.1'
         custom_sender_address = 'Foo'
@@ -162,7 +162,7 @@ class SMSServiceTestCase(unittest.TestCase):
         custom_timeout = 30
 
         service = websms.SMSService(
-            post_url=custom_post_url,
+            api_url=custom_api_url,
             username=custom_username,
             password=custom_password,
             sender_address=custom_sender_address,
@@ -171,7 +171,7 @@ class SMSServiceTestCase(unittest.TestCase):
             timeout=custom_timeout,
         )
 
-        self.assertEqual(service.post_url, custom_post_url)
+        self.assertEqual(service.api_url, custom_api_url)
         self.assertEqual(service.username, custom_username)
         self.assertEqual(service.password, custom_password)
         self.assertEqual(service.sender_address, custom_sender_address)
@@ -185,7 +185,7 @@ class SMSServiceTestCase(unittest.TestCase):
 
     def test_configure(self):
         """Test for `configure()` method."""
-        custom_post_url = 'http://localhost:8000/post.php'
+        custom_api_url = 'http://localhost:8000/post.php'
         custom_username = 'johndoe'
         custom_password = 'admin.1'
         custom_sender_address = 'Foo'
@@ -195,7 +195,7 @@ class SMSServiceTestCase(unittest.TestCase):
 
         service = websms.SMSService()
         service.configure(
-            post_url=custom_post_url,
+            api_url=custom_api_url,
             username=custom_username,
             password=custom_password,
             sender_address=custom_sender_address,
@@ -204,7 +204,7 @@ class SMSServiceTestCase(unittest.TestCase):
             timeout=custom_timeout,
         )
 
-        self.assertEqual(service.post_url, custom_post_url)
+        self.assertEqual(service.api_url, custom_api_url)
         self.assertEqual(service.username, custom_username)
         self.assertEqual(service.password, custom_password)
         self.assertEqual(service.sender_address, custom_sender_address)
@@ -230,7 +230,7 @@ class SMSServiceTestCase(unittest.TestCase):
         )
 
         mock_post.assert_called_once_with(
-            url=websms.SMSService.SMS_POST_URL,
+            url=websms.SMSService.SMS_API_URL,
             json={
                 'recipientAddressList': ['+4911122233344'],
                 'messageContent': 'Hello!',
@@ -264,7 +264,7 @@ class SMSServiceTestCase(unittest.TestCase):
         )
 
         mock_post.assert_called_once_with(
-            url=websms.SMSService.SMS_POST_URL,
+            url=websms.SMSService.SMS_API_URL,
             json={
                 'recipientAddressList': ['+4911122233344'],
                 'messageContent': 'Hello!',
@@ -310,7 +310,7 @@ class SMSServiceTestCase(unittest.TestCase):
             )
 
         mock_post.assert_called_once_with(
-            url=websms.SMSService.SMS_POST_URL,
+            url=websms.SMSService.SMS_API_URL,
             json={
                 'recipientAddressList': ['+4911122233344'],
                 'messageContent': 'Hello!',
@@ -335,7 +335,7 @@ class SMSServiceTestCase(unittest.TestCase):
             )
 
         mock_post.assert_called_once_with(
-            url=websms.SMSService.SMS_POST_URL,
+            url=websms.SMSService.SMS_API_URL,
             json={
                 'recipientAddressList': ['+4911122233344'],
                 'messageContent': 'Hello!',
@@ -366,7 +366,7 @@ class SMSServiceTestCase(unittest.TestCase):
             )
 
         mock_post.assert_called_once_with(
-            url=websms.SMSService.SMS_POST_URL,
+            url=websms.SMSService.SMS_API_URL,
             json={
                 'recipientAddressList': ['+4911122233344'],
                 'messageContent': 'Hello!',
@@ -394,7 +394,7 @@ class SMSServiceTestCase(unittest.TestCase):
         )
 
         mock_post.assert_called_once_with(
-            url=websms.SMSService.SMS_POST_URL,
+            url=websms.SMSService.SMS_API_URL,
             json={
                 'recipientAddressList': ['+4911122233344'],
                 'messageContent': 'Hello!',
@@ -709,7 +709,7 @@ class FunctionsTestCase(unittest.TestCase):
     @mock.patch('websms.default_service.configure')
     def test_configure(self, mock_configure):
         """Test `configure()` function."""
-        custom_post_url = 'http://localhost:8000/post.php'
+        custom_api_url = 'http://localhost:8000/post.php'
         custom_username = 'johndoe'
         custom_password = 'admin.1'
         custom_sender_address = 'Foo'
@@ -718,7 +718,7 @@ class FunctionsTestCase(unittest.TestCase):
         custom_timeout = 30
 
         websms.configure(
-            post_url=custom_post_url,
+            api_url=custom_api_url,
             username=custom_username,
             password=custom_password,
             sender_address=custom_sender_address,
@@ -727,7 +727,7 @@ class FunctionsTestCase(unittest.TestCase):
             timeout=custom_timeout,
         )
         mock_configure.assert_called_with(
-            post_url=custom_post_url,
+            api_url=custom_api_url,
             username=custom_username,
             password=custom_password,
             sender_address=custom_sender_address,

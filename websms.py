@@ -13,9 +13,7 @@ class SMSServiceError(Exception):
     def __init__(
         self,
         message: Optional[str] = None,
-        original_exception: Optional[
-            Union[requests.HTTPError, requests.RequestException]
-        ] = None,
+        original_exception: Optional[requests.RequestException] = None,
     ):
         message = message or str(original_exception)
         super().__init__(message)

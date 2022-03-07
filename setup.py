@@ -29,7 +29,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Topic :: Utilities',
     ],
-    keywords='sms websms message text phone',
+    keywords='sms websms message text phone sender mobile',
     py_modules=['websms'],
     install_requires=['requests >= 2.25'],
     test_suite='tests',
